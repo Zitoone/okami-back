@@ -1,0 +1,34 @@
+
+{
+  "personalInfo": {
+    "lastName": "?",
+    "firstName": "?",
+    "email": "astrix@astrix.com",
+    "phone": "06 5007 4789",
+    "projectName": "Astrix",
+    "invitName": "",
+    "infoRun": "",
+    "setupTimeInMin": 10,
+    "soundcheck": "",
+    "record": "",
+    "setup": "",
+    "artistComments": "",
+    "pics": ""
+  },
+  "adminInfo": {
+    "nbOfPerson": 1,
+    "stage": "Doma",
+    "gigDateTime": null,
+    "soundcheckDayTime": null,
+    "arrivedRun": "",
+    "departRun": "",
+    "accommodation": "Hotel",
+    "bookingFee": 5000,
+    "travelExpense": 0,
+    "totalFees": 5000,
+    "paiementInfo": "3 months before the show by bank transfer",
+    "specialInfo": "Tête d'affiche",
+    "adminComments": ""
+  }
+}
+
