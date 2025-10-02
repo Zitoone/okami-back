@@ -1,4 +1,5 @@
-
+mongodb+srv://olivian:2380@okami.xl61aby.mongodb.net/okami2026?retryWrites=true&w=majority&appName=okami
+mongodb+srv://olivian:2380@okami.9145ube.mongodb.net/okami2026?retryWrites=true&w=majority&appName=okami (gmail)
 {
   "personalInfo": {
     "lastName": "?",

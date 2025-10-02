@@ -2,7 +2,7 @@ const Artist = require('../models/artistsModel')
 
 //Fonction pour créer (ou modifier si existant) un nouvel artiste via le form
 exports.createOrUpdateArtist = async (req, res) => {
-  const { lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics } = req.body
+  const { lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics } = req.body.personalInfo
 
   try {
     let artist = await Artist.findOne({ "personalInfo.projectName": projectName })
@@ -99,19 +99,53 @@ exports.getArtistById=async (req, res)=>{
     }
 }
 
-/* exports.updateArtist=async (req, res)=>{
-    const {name, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics, nbOfPerson, stage, gigDateTime, soundcheckDayTime, arrivedRun, departRun, accommodation, roadMap, contract, invoice, bookingFee, travelExpense, totalFees, paiementInfo, sacemForm, specialInfo, adminComments} =req.body
+exports.updateArtist=async (req, res)=>{
+    const {lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics} = req.body.personalInfo
+    const {nbOfPerson, stage, gigDateTime, soundcheckDayTime, arrivedRun, departRun, accommodation, roadMap, contract, invoice, bookingFee, travelExpense, totalFees, paiementInfo, sacemForm, specialInfo, adminComments} =req.body.adminInfo
     try {
         const artist=await Artist.findById(req.params.id)
         if(artist == null){
             return res.status(404).json({message: 'Artiste non trouvé'})
         }
-        if(name != null){
-            artist.name= req.body.name
-        }
-        const updateArtist=await artist.save()
-        res.json(updateArtist)
+        if(artist){
+            const personalInfo = artist.personalInfo
+            const adminInfo = artist.adminInfo
+            if (lastName) personalInfo.lastName = lastName
+            if (firstName) personalInfo.firstName = firstName
+            if (email) personalInfo.email = email
+            if (phone) personalInfo.phone = phone
+            if (projectName) personalInfo.projectName = projectName
+            if (invitName) personalInfo.invitName = invitName
+            if (infoRun) personalInfo.infoRun = infoRun
+            if (setupTimeInMin) personalInfo.setupTimeInMin = setupTimeInMin
+            if (soundcheck) personalInfo.soundcheck = soundcheck
+            if (record) personalInfo.record = record
+            if (setup) personalInfo.setup = setup
+            if (artistComments) personalInfo.artistComments = artistComments
+            if (pics) personalInfo.pics = pics
+
+            if (nbOfPerson) adminInfo.nbOfPerson = nbOfPerson
+            if (stage) adminInfo.stage = stage
+            if (gigDateTime) adminInfo.gigDateTime = gigDateTime
+            if (soundcheckDayTime) adminInfo.soundcheckDayTime = soundcheckDayTime
+            if (arrivedRun) adminInfo.arrivedRun = arrivedRun
+            if (departRun) adminInfo.departRun = departRun
+            if (accommodation) adminInfo.accommodation = accommodation
+            if (roadMap) adminInfo.roadMap = roadMap
+            if (contract) adminInfo.contract = contract
+            if (invoice) adminInfo.invoice = invoice
+            if (bookingFee) adminInfo.bookingFee = bookingFee
+            if (travelExpense) adminInfo.travelExpense = travelExpense
+            if (totalFees) adminInfo.totalFees = totalFees
+            if (paiementInfo) adminInfo.paiementInfo = paiementInfo
+            if (sacemForm) adminInfo.sacemForm = sacemForm
+            if (specialInfo) adminInfo.specialInfo = specialInfo
+            if (adminComments) adminInfo.adminComments = adminComments
+
+            await artist.save()
+            res.json({ message: "Artiste mis à jour", artist })
+        }        
     } catch (err) {
         res.status(400).json({message: err.message})
     }
-} */
+}
