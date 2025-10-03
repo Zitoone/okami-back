@@ -11,6 +11,7 @@ router.post('/artists', authMiddleware, artistsController.createNewArtist)
 router.get('/artists', authMiddleware, artistsController.getAllArtists)
 router.get('/artists/:id', authMiddleware, artistsController.getArtistById)
 router.patch('/artists/:id', authMiddleware, artistsController.updateArtist)
+router.delete('/artists/:id', authMiddleware, artistsController.deleteArtist)
 
 
 module.exports=router

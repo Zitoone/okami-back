@@ -76,7 +76,7 @@ exports.createNewArtist = async (req, res) => {
     }
 } */
 
-//Fonction pour récupérer tous les artistes
+//Fonction pour récupérer tous les artistes (admin)
 exports.getAllArtists=async (req,res)=>{
     try{
         const artists= await Artist.find()
@@ -86,7 +86,7 @@ exports.getAllArtists=async (req,res)=>{
     }
 }
 
-//Fonction pour récupérer un artiste par son ID
+//Fonction pour récupérer un artiste par son ID (admin)
 exports.getArtistById=async (req, res)=>{
     try {
         const artist=await Artist.findById(req.params.id)
@@ -99,6 +99,7 @@ exports.getArtistById=async (req, res)=>{
     }
 }
 
+//Fonction pour mettre à jour un artiste (admin)
 exports.updateArtist=async (req, res)=>{
     const {lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics} = req.body.personalInfo
     const {nbOfPerson, stage, gigDateTime, soundcheckDayTime, arrivedRun, departRun, accommodation, roadMap, contract, invoice, bookingFee, travelExpense, totalFees, paiementInfo, sacemForm, specialInfo, adminComments} =req.body.adminInfo
@@ -147,5 +148,19 @@ exports.updateArtist=async (req, res)=>{
         }        
     } catch (err) {
         res.status(400).json({message: err.message})
+    }
+}
+
+//Fonction pour supprimer un artiste (admin)
+exports.deleteArtist = async(req,res) => {
+    try {
+        const artist = await Artist.findById(req.params.id)
+        if(artist == null){
+            res.status(404).json({message: "Artiste non trouvé"})
+        }
+        await artist.deleteOne()
+        res.json({message: "Artiste supprimé"})
+    } catch (error) {
+        res.status(500).json({message: error})
     }
 }
