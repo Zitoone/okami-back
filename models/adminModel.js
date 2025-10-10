@@ -38,7 +38,7 @@ const adminSchema=new mongoose.Schema({
     }
 })
 
-//méthode pre() => se lance AVANT une l'action save
+//méthode pre() => se lance AVANT une action save
 //Remplace le mot de passe en clair par sa version hachée si modifié
 adminSchema.pre('save',async function(next){
     if(!this.isModified('password')) return next()

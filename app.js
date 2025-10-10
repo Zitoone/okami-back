@@ -7,14 +7,15 @@ const cors = require("cors");
 
 require('./db')
 
-app.use(cors({ origin: "http://localhost:5173" })) // port front Vite
+/* app.use(cors({ origin: "http://localhost:5176" }))  */// port front Vite
+app.use(cors())
 app.use(express.json())
 
 const adminRoutes = require('./routes/adminRoutes')
 const artistsRoutes = require('./routes/artistsRoutes')
 
 app.use('/api/admin', adminRoutes)
-app.use('/api/artist', artistsRoutes)
+app.use('/api/artists', artistsRoutes)
 
 app.get('/', (req,res)=>{
     res.send('Bienvenue sur votre API RESTful OKAMI!')

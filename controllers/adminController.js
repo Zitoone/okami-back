@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt')
 
 exports.login = async(req,res)=>{
     const{email, password}=req.body
+
+    if (!email || !password) {
+  return res.status(400).json({ message: "Email et mot de passe requis" })
+}
     try {
         const  admin = await Admin.findOne({email})
         if(!admin) return res.status(401).json({message: "Cet email n'existe pas"})

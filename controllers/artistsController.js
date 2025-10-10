@@ -141,7 +141,7 @@ exports.updateArtist=async (req, res)=>{
             if (paiementInfo) adminInfo.paiementInfo = paiementInfo
             if (sacemForm) adminInfo.sacemForm = sacemForm
             if (specialInfo) adminInfo.specialInfo = specialInfo
-            if (adminComments) adminInfo.adminComments = adminComments
+            /* if (adminComments) adminInfo.adminComments = adminComments */
 
             await artist.save()
             res.json({ message: "Artiste mis à jour", artist })

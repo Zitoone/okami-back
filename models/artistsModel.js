@@ -60,10 +60,10 @@ const artistSchema= new mongoose.Schema({
             type: String
         },
         gigDateTime:{
-            type: Date
+            type: String
         },
         soundcheckDayTime:{
-            type: Date
+            type: String
         },
         arrivedRun:{
             type: String
@@ -93,7 +93,7 @@ const artistSchema= new mongoose.Schema({
             type: Number
         },
         totalFees:{
-            type: Number
+            type: String
         },
         paiementInfo:{
             type: String
@@ -104,10 +104,10 @@ const artistSchema= new mongoose.Schema({
         },
         specialInfo:{
             type: String
-        },
+        }/* ,
         adminComments:{
             type: String
-        }
+        } */
     },
     createdAt: { type: Date, default: Date.now }
 })

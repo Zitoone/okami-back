@@ -1,11 +1,12 @@
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjkzYzdkNThmZDk4Zjg0YmY2NmFiYSIsImVtYWlsIjoib2xpdmlhQG9rYW1pZmVzdGl2YWwuY29tIiwiaWF0IjoxNzU5NDc1OTYwLCJleHAiOjE3NTk1NjIzNjB9.r0a5F8RH0Ikw_jFMdKC-3eNxbTOVN9F1Mc9WzpBVh4I"
-{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjkzYzdkNThmZDk4Zjg0YmY2NmFiYSIsImVtYWlsIjoib2xpdmlhQG9rYW1pZmVzdGl2YWwuY29tIiwiaWF0IjoxNzYwMDk2MDk3LCJleHAiOjE3NjAxODI0OTd9.N_jhkwv6gje2zf2RSep2PSjDd_ELQQVzIVAX3u8FRQ0"
+
+  {
   "personalInfo": {
-    "lastName": "?",
-    "firstName": "?",
-    "email": "astrix@astrix.com",
+    "lastName": "Nanquette",
+    "firstName": "Thomas",
+    "email": "auparadis@astrix.com",
     "phone": "06 5007 4789",
-    "projectName": "Astrix",
+    "projectName": "DJ TOM",
     "invitName": "",
     "infoRun": "",
     "setupTimeInMin": 10,
@@ -18,8 +19,8 @@
   "adminInfo": {
     "nbOfPerson": 1,
     "stage": "Doma",
-    "gigDateTime": null,
-    "soundcheckDayTime": null,
+    "gigDateTime": "6 juin à 13h",
+    "soundcheckDayTime": "",
     "arrivedRun": "",
     "departRun": "",
     "accommodation": "Hotel",
@@ -31,4 +32,3 @@
     "adminComments": ""
   }
 }
-
