@@ -49,6 +49,12 @@ const artistSchema= new mongoose.Schema({
             },
             pics:{
                 type: String
+            },
+            socials:{
+                type: String 
+            },
+            promoText:{
+                type: String
             }
     },
     // Infos gérées par les admin
@@ -104,10 +110,18 @@ const artistSchema= new mongoose.Schema({
         },
         specialInfo:{
             type: String
-        }/* ,
-        adminComments:{
+        }
+    },
+    promo:{
+        descriptionFr:{
             type: String
-        } */
+        },
+        descriptionEng:{
+            type: String
+        },
+        style:{
+            type: String
+        },
     },
     createdAt: { type: Date, default: Date.now }
 })
