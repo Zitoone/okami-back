@@ -30,10 +30,10 @@ const artistSchema= new mongoose.Schema({
                 type: String    
             },
             infoRun:{
-                type: String,     
+                type: String    
             },
             setupTimeInMin:{
-                type: Number
+                type: String
             },
             soundcheck:{
                 type: String
@@ -60,7 +60,7 @@ const artistSchema= new mongoose.Schema({
     // Infos gérées par les admin
     adminInfo:{
         nbOfPerson:{
-            type: Number,     
+            type: String   
         },
         stage:{
             type: String
@@ -81,22 +81,19 @@ const artistSchema= new mongoose.Schema({
             type: String
         },
         roadMap:{
-            type: Boolean,
-            default:false
+            type: String
         },
         contract:{
-            type: Boolean,
-            default:false
+            type: String
         },
         invoice:{
-            type: Boolean,
-            default:false
+            type: String
         },
         bookingFee:{
-            type: Number
+            type: String
         },
         travelExpense:{
-            type: Number
+            type: String
         },
         totalFees:{
             type: String
@@ -105,14 +102,11 @@ const artistSchema= new mongoose.Schema({
             type: String
         },
         sacemForm:{
-            type: Boolean,
-            default: false
+            type: String
         },
         specialInfo:{
             type: String
-        }
-    },
-    promo:{
+        },
         descriptionFr:{
             type: String
         },

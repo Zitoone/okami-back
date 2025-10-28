@@ -10,9 +10,10 @@ router.post('/form', multerMiddleware, artistsController.createOrUpdateArtist)
 
 //Gestion des artistes par les admin
 router.post('/new', authMiddleware, artistsController.createNewArtist)
+router.get('/public', artistsController.getAllArtists)
 router.get('/', authMiddleware, artistsController.getAllArtists)
-router.get('/:id', authMiddleware, artistsController.getArtistById)
-router.patch('/:id', authMiddleware, artistsController.updateArtist)
+router.get('/:id', authMiddleware, /* multerMiddleware, */ artistsController.getArtistById)
+router.patch('/:id', authMiddleware,multerMiddleware, artistsController.updateArtist)
 router.delete('/:id', authMiddleware, artistsController.deleteArtist)
 
 module.exports = router

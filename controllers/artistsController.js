@@ -5,7 +5,7 @@ exports.createOrUpdateArtist = async (req, res) => {
     try {
     const file = req.file
     const personalInfo = req.body.personalInfo ? JSON.parse(req.body.personalInfo) : {}
-    const { lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics, socials, promoText } = personalInfo
+    const { lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, socials, promoText } = personalInfo
     if(file){
         personalInfo.pics = file.path
     }
@@ -46,7 +46,7 @@ exports.createOrUpdateArtist = async (req, res) => {
 //Fonction pour créer un nouvel artiste dans la bdd par un admin
 exports.createNewArtist = async (req, res) => {
     try {
-        const { projectName, lastName, firstName, email } = req.body
+        const { projectName, lastName, firstName, email } = req.body.personalInfo
 
         if (!projectName) return res.status(400).json({message: "Nom du projet obligatoire"})
         
@@ -89,7 +89,7 @@ exports.createNewArtist = async (req, res) => {
     }
 } */
 
-//Fonction pour récupérer tous les artistes (admin)
+//Fonction pour récupérer tous les artistes (admin ou public pour la promo)
 exports.getAllArtists=async (req,res)=>{
     try{
         const artists= await Artist.find()
@@ -113,64 +113,37 @@ exports.getArtistById=async (req, res)=>{
 }
 
 //Fonction pour mettre à jour un artiste (admin)
-exports.updateArtist=async (req, res)=>{
-    const {lastName, firstName, email, phone, projectName, invitName, infoRun, setupTimeInMin, soundcheck, record, setup, artistComments, pics, socials, promoText} = req.body.personalInfo
-    const {nbOfPerson, stage, gigDateTime, soundcheckDayTime, arrivedRun, departRun, accommodation, roadMap, contract, invoice, bookingFee, travelExpense, totalFees, paiementInfo, sacemForm, specialInfo} =req.body.adminInfo
-    const {descriptionFr, descriptionEng, style} = req.body.promo
+exports.updateArtist = async (req, res) => {
     try {
-        const artist=await Artist.findById(req.params.id)
-        if(artist == null){
-            return res.status(404).json({message: 'Artiste non trouvé'})
+        const artist = await Artist.findById(req.params.id)
+        if (!artist) return res.status(404).json({ message: 'Artiste non trouvé' })
+
+        const file = req.file
+        const personalInfo = req.body.personalInfo ? JSON.parse(req.body.personalInfo) : {}
+        const adminInfoBody = req.body.adminInfo ? JSON.parse(req.body.adminInfo) : {}
+
+        // Met à jour les infos personnelles
+        for (const key in personalInfo) {
+            if (personalInfo[key] != null) artist.personalInfo[key] = personalInfo[key]
         }
-        if(artist){
-            const personalInfo = artist.personalInfo
-            const adminInfo = artist.adminInfo
-            const promo = artist.promo
-            if (lastName) personalInfo.lastName = lastName
-            if (firstName) personalInfo.firstName = firstName
-            if (email) personalInfo.email = email
-            if (phone) personalInfo.phone = phone
-            if (projectName) personalInfo.projectName = projectName
-            if (invitName) personalInfo.invitName = invitName
-            if (infoRun) personalInfo.infoRun = infoRun
-            if (setupTimeInMin) personalInfo.setupTimeInMin = setupTimeInMin
-            if (soundcheck) personalInfo.soundcheck = soundcheck
-            if (record) personalInfo.record = record
-            if (setup) personalInfo.setup = setup
-            if (artistComments) personalInfo.artistComments = artistComments
-            if (pics) personalInfo.pics = pics
-            if (socials) personalInfo.socials = socials
-            if (promoText) personalInfo.promoText = promoText
 
+        // Met à jour les infos admin
+        for (const key in adminInfoBody) {
+            if (adminInfoBody[key] != null) artist.adminInfo[key] = adminInfoBody[key]
+        }
 
-            if (nbOfPerson !== undefined) adminInfo.nbOfPerson = nbOfPerson
-            if (stage) adminInfo.stage = stage
-            if (gigDateTime) adminInfo.gigDateTime = gigDateTime
-            if (soundcheckDayTime) adminInfo.soundcheckDayTime = soundcheckDayTime
-            if (arrivedRun) adminInfo.arrivedRun = arrivedRun
-            if (departRun) adminInfo.departRun = departRun
-            if (accommodation) adminInfo.accommodation = accommodation
-            if (roadMap !== undefined) adminInfo.roadMap = roadMap
-            if (contract !== undefined) adminInfo.contract = contract
-            if (invoice !== undefined) adminInfo.invoice = invoice
-            if (bookingFee !== undefined) adminInfo.bookingFee = bookingFee
-            if (travelExpense !== undefined) adminInfo.travelExpense = travelExpense
-            if (totalFees) adminInfo.totalFees = totalFees
-            if (paiementInfo) adminInfo.paiementInfo = paiementInfo
-            if (sacemForm !== undefined) adminInfo.sacemForm = sacemForm
-            if (specialInfo) adminInfo.specialInfo = specialInfo
+        // Photo
+        if (file) artist.personalInfo.pics = file.path
 
-            if (descriptionFr) promo.descriptionFr = descriptionFr
-            if (descriptionEng) promo.descriptionEng = descriptionEng
-            if (style) promo.style = style
+        await artist.save()
+        res.json(artist)
 
-            await artist.save()
-            res.json({ message: "Artiste mis à jour", artist })
-        }        
     } catch (err) {
-        res.status(400).json({message: err.message})
+        res.status(400).json({ message: err.message })
     }
 }
+
+
 
 //Fonction pour supprimer un artiste (admin)
 exports.deleteArtist = async(req,res) => {

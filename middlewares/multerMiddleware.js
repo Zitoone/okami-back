@@ -17,13 +17,15 @@ const upload = multer({ storage })
 
 //Création du middleware
 const multerMiddleware = (req, res, next) => {
-  upload.single('pics')(req, res, (err) => {
+    upload.single('pics')(req, res, (err) => {
     if (err) {
-      console.error('Erreur Multer :', err)
-      return res.status(400).json({ message: 'Erreur lors du téléchargement du fichier.' })
+        console.error('Erreur Multer :', err)
+        return res.status(400).json({ message: 'Erreur lors du téléchargement du fichier.' })
     }
     next()
-  })
+    })
 }
 
 module.exports = multerMiddleware
+
+//TODO: Mis en place de Sharp pour redimensionner les images
