@@ -1,6 +1,6 @@
-require('../db')
-const Admin = require ('../models/adminModel')
-const mongoose = require("mongoose")
+import '../db.js'
+import Admin from '../models/adminModel.js'
+import mongoose from 'mongoose'
 
 async function createAdmin() {
     try{

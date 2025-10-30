@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer'
 
-exports.sendFormEmail = async (req, res) => {
+export const sendFormEmail = async (req, res) => {
 
     console.log("sendFormEmail appelé");
     console.log("Données reçues :", req.body);

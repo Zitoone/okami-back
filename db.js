@@ -1,10 +1,14 @@
-const mongoose = require ('mongoose')
+import mongoose from "mongoose"
 
-const dbURI=process.env.MONGO_URI
+const connectDB = async()=>{
+    try {
+        await mongoose.connect(process.env.MONGO_URI)
+        "Connexion à MongoDB réussie"
+    } catch (error) {
+        console.error("Erreur de connexion à MongoDB", error.message)
+        process.exit(1)
+    }
+}
 
-mongoose.connect(dbURI)
-.then(()=>console.log("Connexion à MongoDB réussie: ", mongoose.connection.name))
-.catch(err=>console.error("Erreur de connexion à MongoDB"))
-
-module.exports = mongoose.connection
+export default connectDB
 

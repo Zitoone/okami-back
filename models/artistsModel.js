@@ -1,123 +1,62 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
-const artistSchema= new mongoose.Schema({
-    //Infos formulaire artiste
-    personalInfo:{
-            lastName:{
-                type: String,
-                /* required:[true, "Le nom est requis"] */        
-            },
-            firstName:{
-                type: String,
-                /* required:[true, "Le prénom est requis"]    */     
-            },
-            email:{
-                type: String,
-                /* required: [true, "L'email est obligatoire"], */
-                trim: true,
-                lowercase: true,
-                match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,6})+$/, "Veuillez entrer un email valide"]
-            },
-            phone:{
-                type: String,
-                /* required: [true, "Le téléphone est obligatoire"] */
-            },
-            projectName:{
-                type: String,
-                /* required:[true, "Le nom du projet est requis"] */
-            },
-            invitName:{
-                type: String    
-            },
-            infoRun:{
-                type: String    
-            },
-            setupTimeInMin:{
-                type: String
-            },
-            soundcheck:{
-                type: String
-            },
-            record:{
-                type: String
-            },
-            setup:{
-                type: String
-            },
-            artistComments:{
-                type: String    
-            },
-            pics:{
-                type: String
-            },
-            socials:{
-                type: String 
-            },
-            promoText:{
-                type: String
-            }
-    },
-    // Infos gérées par les admin
-    adminInfo:{
-        nbOfPerson:{
-            type: String   
-        },
-        stage:{
-            type: String
-        },
-        gigDateTime:{
-            type: String
-        },
-        soundcheckDayTime:{
-            type: String
-        },
-        arrivedRun:{
-            type: String
-        },
-        departRun:{
-            type: String
-        },
-        accommodation: {
-            type: String
-        },
-        roadMap:{
-            type: String
-        },
-        contract:{
-            type: String
-        },
-        invoice:{
-            type: String
-        },
-        bookingFee:{
-            type: String
-        },
-        travelExpense:{
-            type: String
-        },
-        totalFees:{
-            type: String
-        },
-        paiementInfo:{
-            type: String
-        },
-        sacemForm:{
-            type: String
-        },
-        specialInfo:{
-            type: String
-        },
-        descriptionFr:{
-            type: String
-        },
-        descriptionEng:{
-            type: String
-        },
-        style:{
-            type: String
-        },
-    },
-    createdAt: { type: Date, default: Date.now }
-})
+const artistSchema = new mongoose.Schema({
+  // Clé unique pour relier les données
+  projectName: { type: String, required: true, unique: true, trim: true },
+  
+  // Données personnelles (artiste)
+  firstName: { type: String, trim: true },
+  lastName: { type: String, trim: true },
+  email: { type: String, trim: true },
+  phone: { type: String, trim: true },
+  guestName: { type: String, trim: true },
+  runInfo: { type: String },
+  
+  // Informations techniques (artiste)
+  setup: { type: String },
+  setupTime: { type: String },
+  needsSoundcheck: { type: Boolean, default: false },
+  canRecordSet: { type: Boolean, default: false }, 
+  comments: { type: String },
+  
+  // Médias et promotion (artiste)
+  promoPhoto: { type: String },
+  socialLinks: {
+    facebook: { type: String, default: '' },
+    instagram: { type: String, default: '' },
+    spotify: { type: String, default: '' },
+    soundcloud: { type: String, default: '' },
+    website: { type: String, default: '' },
+  },
+  musicalStyle: { type: String },
+  promoText: { type: String },
+  
+  // Données admin
+  numberOfPeople: { type: Number },
+  stage: { type: String },
+  performanceDateTime: { type: String},
+  soundcheckDateTime: { type: String },
+  arrivalRun: { type: String },
+  departureRun: { type: String },
+  accommodation: { type: String },
+  
+  // Documents admin
+  contract: { type: String },
+  invoice: { type: String },
+  roadmap: { type: String },
+  sacemForm: { type: String },
+  specialInfo: { type: String },
+  
+  // Finances admin
+  fee: { type: Number, default: 0 },
+  travelExpenses: { type: Number, default: 0 },
+  totalTTC: { type: String },
+  paymentInfo: { type: String },
+    
+  // Métadonnées
+  dataSource: { type: String, enum: ['artist', 'admin'], default: 'artist' },
+  lastModifiedBy: { type: String, enum: ['artist', 'admin'] },
+  isValidated: { type: Boolean, default: false }
+}, { timestamps: true });
 
-module.exports=mongoose.model("Artist", artistSchema)
+export default mongoose.model('Artist2026', artistSchema,'artists_2026');

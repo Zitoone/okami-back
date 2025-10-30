@@ -1,8 +1,8 @@
-const Admin = require('../models/adminModel')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+import Admin from '../models/adminModel.js'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
-exports.login = async(req,res)=>{
+export const login = async(req,res)=>{
     const{email, password}=req.body
 
     if (!email || !password) {

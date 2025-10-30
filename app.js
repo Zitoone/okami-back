@@ -1,29 +1,32 @@
-const express=require ('express')
-const app = express()
-require('dotenv').config()
-const port = process.env.PORT
-const cors = require("cors")
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import connectDB from './db.js';
 
-require('./db')
+dotenv.config();
+const app=express();
 
 /* app.use(cors({ origin: "http://localhost:5176" }))  */// port front Vite
 
 app.use(cors())
 app.use(express.json())
+app.use('/uploads', express.static('uploads')) // Pour que les images soient accessibles depuis le front
 
-const adminRoutes = require('./routes/adminRoutes')
-const artistsRoutes = require('./routes/artistsRoutes')
-const emailRoutes = require('./routes/emailRoutes')
+connectDB();
 
-app.use('/api/admin', adminRoutes)
+import artistsRoutes from './routes/artistsRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
+import emailRoutes from './routes/emailRoutes.js'
+
 app.use('/api/artists', artistsRoutes)
-app.use('/api/uploads', express.static('uploads')) // Pour que les images soient accessibles depuis le front
+app.use('/api/admin', adminRoutes)
 app.use('/api/email', emailRoutes)
 
 app.get('/', (req,res)=>{
     res.send('Bienvenue sur votre API RESTful OKAMI!')
 })
 
+const port = process.env.PORT || 5001
 app.listen(port, ()=>{
 console.log(`Serveur démarré sur http://localhost:${port}`)
 })

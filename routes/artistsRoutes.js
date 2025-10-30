@@ -1,21 +1,25 @@
-const express = require('express')
+import express from 'express'
+import * as artistsController from '../controllers/artistsController.js'
+import { upload, resizeImage } from '../middlewares/multerMiddleware.js'
+import authMiddleware from '../middlewares/authMiddleware.js'
+
 const router = express.Router()
-const artistsController=require('../controllers/artistsController')
-const authMiddleware=require('../middlewares/authMiddleware')
-const multerMiddleware=require('../middlewares/multerMiddleware')
 
 
 // Création d'artiste via le formulaire avec Multer
-router.post('/form', multerMiddleware, artistsController.createOrUpdateArtist)
-
-//Gestion des artistes par les admin
-router.post('/new', authMiddleware, artistsController.createNewArtist)
+/* router.post('/form', multerMiddleware, artistsController.createOrUpdateArtist)
+ */
+// Route publique AVANT les autres pour la promo des artistes
 router.get('/public', artistsController.getAllArtists)
+//Gestion des artistes par les admin
+router.post('/new', authMiddleware, artistsController.createArtist)
+
 router.get('/', authMiddleware, artistsController.getAllArtists)
-router.get('/:id', authMiddleware, /* multerMiddleware, */ artistsController.getArtistById)
-router.patch('/:id', authMiddleware,multerMiddleware, artistsController.updateArtist)
+router.get('/:id', authMiddleware, artistsController.getArtist)
+router.patch('/:id', authMiddleware, upload.single('promoPhoto'), resizeImage, artistsController.updateArtist)
 router.delete('/:id', authMiddleware, artistsController.deleteArtist)
 
-module.exports = router
+export default router
+
 
 
