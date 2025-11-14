@@ -1,4 +1,4 @@
-import '../db.js'
+import '../config/db.js'
 import Admin from '../models/adminModel.js'
 import mongoose from 'mongoose'
 

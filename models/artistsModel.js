@@ -22,9 +22,7 @@ const artistSchema = new mongoose.Schema({
   // Médias et promotion (artiste)
   promoPhoto: { type: String },
   socialLinks: {
-    facebook: { type: String, default: '' },
     instagram: { type: String, default: '' },
-    spotify: { type: String, default: '' },
     soundcloud: { type: String, default: '' },
     website: { type: String, default: '' },
   },
@@ -32,7 +30,7 @@ const artistSchema = new mongoose.Schema({
   promoText: { type: String },
   
   // Données admin
-  numberOfPeople: { type: Number },
+  numberOfPeople: { type: Number, default:1 },
   stage: { type: String },
   performanceDateTime: { type: String},
   soundcheckDateTime: { type: String },
