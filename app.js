@@ -12,20 +12,20 @@ const app = express()
 
 // CORS ouvert temporairement pour le déploiement avant d'avoir l'URL du front
 const allowedOrigins =
-  process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'production'
     ? '*' // toutes les origines autorisées en prod temporairement
-    : ['http://localhost:5176', 'http://127.0.0.1:5176']
+    : ['http://localhost:5173', 'http://127.0.0.1:5173']
 
 app.use(
-  cors({
+    cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins === '*' || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins === '*' || allowedOrigins.includes(origin)) {
         callback(null, true)
-      } else {
+        } else {
         callback(new Error('Not allowed by CORS'))
-      }
+        }
     }
-  })
+    })
 )
 
 app.use(express.json())
@@ -39,7 +39,7 @@ app.use('/api/admin', adminRoutes)
 app.use('/api/email', emailRoutes)
 
 app.get('/', (req, res) => {
-  res.send('Bienvenue sur votre API RESTful OKAMI!')
+    res.send('Bienvenue sur votre API RESTful OKAMI!')
 })
 
 // Export pour Vercel
@@ -47,8 +47,8 @@ export default app
 
 // Écoute locale seulement si on lance directement ce fichier
 if (process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 5001
-  app.listen(port, () => {
-    console.log(`Serveur démarré sur http://localhost:${port}`)
-  })
+        const port = process.env.PORT || 5001
+        app.listen(port, () => {
+        console.log(`Serveur démarré sur http://localhost:${port}`)
+    })
 }

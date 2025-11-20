@@ -12,6 +12,7 @@ router.post('/form', upload.single('promoPhoto'), artistsController.createOrUpda
 
 // Route publique AVANT les autres pour la promo des artistes
 router.get('/public', artistsController.getPublicArtists)
+
 //Gestion des artistes par les admin
 router.post('/new', authMiddleware, artistsController.createArtist)
 
