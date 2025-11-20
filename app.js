@@ -31,7 +31,11 @@ app.use(
 app.use(express.json())
 
 // Connexion à la base de données
-connectDB()
+app.use(async (req, res, next) =>{
+    await connectDB()
+    next()
+})
+
 
 // Routes
 app.use('/api/artists', artistsRoutes)
