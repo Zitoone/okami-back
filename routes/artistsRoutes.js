@@ -11,10 +11,7 @@ const router = express.Router()
 router.post('/form', upload.single('promoPhoto'), artistsController.createOrUpdateArtist)
 
 // Route publique AVANT les autres pour la promo des artistes
-router.get('/public', async (req,res)=>{
-    const artists = await Artist.find({ isValidated: true }).sort({ projectName: 1 })
-    res.json(artists)
-})
+router.get('/public', artistsController.getPublicArtists)
 //Gestion des artistes par les admin
 router.post('/new', authMiddleware, artistsController.createArtist)
 

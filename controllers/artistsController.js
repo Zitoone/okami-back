@@ -2,6 +2,20 @@
 import Artist from '../models/artistsModel.js'
 import { uploadToCloudinary } from '../middlewares/uploadMiddleware.js'
 
+//Récupérer les artistes validés pour la page publique
+export const getPublicArtists = async (req, res) => {
+  try {
+    const artists = await Artist.find({ isValidated: true }).sort({ projectName: 1 })
+    if (!artists) {
+      return res.status(404).json({ message: 'Aucun artiste validé trouvé' })
+    }
+    res.json(artists)
+
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
 // Récupérer tous les artistes (route admin privée)
 export const getAllArtists = async (req, res) => {
   try {
@@ -17,7 +31,7 @@ export const getArtist = async (req, res) => {
   try {
     const { id } = req.params
     const artist = await Artist.findById(id).catch(() => null) ||
-                   await Artist.findOne({ projectName: id })
+                  await Artist.findOne({ projectName: id })
     if (!artist) return res.status(404).json({ message: 'Artiste non trouvé' })
     res.json(artist)
   } catch (error) {
@@ -120,7 +134,7 @@ export const deleteArtist = async (req, res) => {
   try {
     const { id } = req.params
     const artist = await Artist.findByIdAndDelete(id).catch(() => null) ||
-                   await Artist.findOneAndDelete({ projectName: id })
+                    await Artist.findOneAndDelete({ projectName: id })
     if (!artist) return res.status(404).json({ message: 'Artiste non trouvé' })
     res.json({ message: 'Artiste supprimé' })
   } catch (error) {
