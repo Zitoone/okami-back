@@ -1,6 +1,6 @@
 import express from 'express'
 import * as artistsController from '../controllers/artistsController.js'
-import { upload } from '../middlewares/multerMiddleware.js'
+import { upload } from '../middlewares/uploadMiddleware.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
 import Artist from '../models/artistsModel.js'
 
@@ -20,7 +20,7 @@ router.post('/new', authMiddleware, artistsController.createArtist)
 
 router.get('/', authMiddleware, artistsController.getAllArtists)
 router.get('/:id', authMiddleware, artistsController.getArtist)
-router.patch('/:id', authMiddleware, upload.single('promoPhoto'), artistsController.updateArtist)
+router.patch('/:id',authMiddleware, upload.single('promoPhoto'), artistsController.updateArtist)
 router.delete('/:id', authMiddleware, artistsController.deleteArtist)
 
 export default router

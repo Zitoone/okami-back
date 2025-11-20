@@ -32,7 +32,7 @@ const connectDB = async()=>{
             return cached.conn
         } catch (error) {
             console.error("Erreur lors de l'attente à MongoDB: ", error.message)
-            process.exit(1) // Termine la fonction si erreur
+            throw error // Laisse le runtime serverless gérer l'erreur proprement
         }
     }
 
