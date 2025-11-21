@@ -2,7 +2,7 @@ import express from 'express'
 import * as artistsController from '../controllers/artistsController.js'
 import { upload } from '../middlewares/uploadMiddleware.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
-import Artist from '../models/artistsModel.js'
+
 
 const router = express.Router()
 
@@ -22,6 +22,3 @@ router.patch('/:id',authMiddleware, upload.single('promoPhoto'), artistsControll
 router.delete('/:id', authMiddleware, artistsController.deleteArtist)
 
 export default router
-
-
-

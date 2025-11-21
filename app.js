@@ -10,25 +10,11 @@ import emailRoutes from './routes/emailRoutes.js'
 
 const app = express()
 
-// CORS ouvert temporairement pour le déploiement avant d'avoir l'URL du front
-const allowedOrigins =
-    process.env.NODE_ENV === 'production'
-    ? '*' // toutes les origines autorisées en prod temporairement
-    : ['http://localhost:5173', 'http://127.0.0.1:5173']
-
-app.use(
-    cors({
-    origin(origin, callback) {
-        if (!origin || allowedOrigins === '*' || allowedOrigins.includes(origin)) {
-        callback(null, true)
-        } else {
-        callback(new Error('Not allowed by CORS'))
-        }
-    }
-    })
-)
+app.use(cors())
+app.options("*", cors())
 
 app.use(express.json())
+
 
 // Connexion à la base de données
 app.use(async (req, res, next) =>{

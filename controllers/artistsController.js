@@ -82,35 +82,31 @@ export const createOrUpdateArtist = async (req, res) => {
 // Mettre à jour un artiste existant (route admin)
 export const updateArtist = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    console.log('🔵 updateArtist appelé');
-    console.log('req.body :', req.body);
-    console.log('req.file :', req.file);
+    const { id } = req.params
 
     // Convertit socialLinks en objet si c’est une string
     if (req.body.socialLinks && typeof req.body.socialLinks === 'string') {
       try {
         req.body.socialLinks = JSON.parse(req.body.socialLinks);
       } catch (err) {
-        console.warn('Impossible de parser socialLinks, on ignore', err);
-        req.body.socialLinks = {};
+        console.warn('Impossible de parser socialLinks, on ignore', err)
+        req.body.socialLinks = {}
       }
     }
 
     // Upload de la photo si présente
     if (req.file) {
-      const result = await uploadToCloudinary(req.file.buffer, 'okami/artists', id);
-      req.body.promoPhoto = result.secure_url; // URL Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, 'okami/artists', id)
+      req.body.promoPhoto = result.secure_url // URL Cloudinary
     }
 
     // Supprime les champs vides
     Object.keys(req.body).forEach(key => {
-      if (req.body[key] === '' || req.body[key] === null) delete req.body[key];
-    });
+      if (req.body[key] === '' || req.body[key] === null) delete req.body[key]
+    })
 
     // Mise à jour par ID
-    let artist = await Artist.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+    let artist = await Artist.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
 
     // Si non trouvé, essaie par projectName et crée si nécessaire
     if (!artist) {
@@ -121,10 +117,10 @@ export const updateArtist = async (req, res) => {
       );
     }
 
-    res.json(artist);
+    res.json(artist)
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message })
   }
 }
 
