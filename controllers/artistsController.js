@@ -1,6 +1,16 @@
 // Import du modèle Artist pour interagir avec la base de données
 import Artist from '../models/artistsModel.js'
-import { uploadToCloudinary } from '../middlewares/uploadMiddleware.js'
+import { uploadImageToCloudinary, uploadFileToCloudinary } from '../middlewares/uploadMiddleware.js'
+
+// Fonction pour générer un nom de fichier Cloudinary sûr
+const getSafeCloudinaryName = (name) => {
+  if (!name) return 'unknown'
+  // Remplace tout ce qui n'est pas lettre, chiffre ou accent par un underscore
+  return name
+    .normalize('NFD')               // décompose les accents
+    .replace(/[^a-zA-Z0-9_-]/g, '_') // remplace symboles et espaces
+}
+
 
 //Récupérer les artistes validés pour la page publique
 export const getPublicArtists = async (req, res) => {
@@ -61,10 +71,19 @@ export const createOrUpdateArtist = async (req, res) => {
       req.body.socialLinks = JSON.parse(req.body.socialLinks)
     }
 
+    const safeName = getSafeCloudinaryName(req.body.projectName)
     // Upload de la photo si présente
-    if (req.file) {
-      const result = await uploadToCloudinary(req.file.buffer, 'okami/artists', req.body.projectName)
+    if (req.files?.promoPhoto?.[0].buffer) {
+      const fileBuffer = req.files.promoPhoto[0].buffer
+      const result = await uploadImageToCloudinary(fileBuffer, 'okami/artists/promoPhoto', safeName)
       req.body.promoPhoto = result.secure_url
+    }
+
+    // Upload du rider tech si présent
+    if (req.files?.riderTechUpload?.[0]) {
+      const fileBuffer = req.files.riderTechUpload[0].buffer
+      const result = await uploadFileToCloudinary(fileBuffer, 'okami/artists/riderTech', safeName)
+      req.body.riderTechUpload = result.secure_url
     }
 
     // Mise à jour ou création si non trouvé
@@ -84,20 +103,41 @@ export const updateArtist = async (req, res) => {
   try {
     const { id } = req.params
 
-    // Convertit socialLinks en objet si c’est une string
+    // Convertit socialLinks en objet si nécessaire
     if (req.body.socialLinks && typeof req.body.socialLinks === 'string') {
       try {
-        req.body.socialLinks = JSON.parse(req.body.socialLinks);
+        req.body.socialLinks = JSON.parse(req.body.socialLinks)
       } catch (err) {
         console.warn('Impossible de parser socialLinks, on ignore', err)
         req.body.socialLinks = {}
       }
     }
 
-    // Upload de la photo si présente
-    if (req.file) {
-      const result = await uploadToCloudinary(req.file.buffer, 'okami/artists', id)
-      req.body.promoPhoto = result.secure_url // URL Cloudinary
+    // Nom safe pour Cloudinary : fallback sur ID si projectName absent
+    const safeName = req.body.projectName
+      ? getSafeCloudinaryName(req.body.projectName)
+      : id
+
+    // Upload promoPhoto si présent
+    if (req.files?.promoPhoto?.[0]) {
+      const fileBuffer = req.files.promoPhoto[0].buffer
+      const result = await uploadImageToCloudinary(
+        fileBuffer,
+        'okami/artists/promoPhoto',
+        safeName
+      )
+      req.body.promoPhoto = result.secure_url
+    }
+
+    // Upload riderTech si présent
+    if (req.files?.riderTechUpload?.[0]) {
+      const fileBuffer = req.files.riderTechUpload[0].buffer
+      const result = await uploadFileToCloudinary(
+        fileBuffer,
+        'okami/artists/riderTech',
+        safeName
+      )
+      req.body.riderTechUpload = result.secure_url
     }
 
     // Supprime les champs vides
@@ -106,20 +146,24 @@ export const updateArtist = async (req, res) => {
     })
 
     // Mise à jour par ID
-    let artist = await Artist.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
+    let artist = await Artist.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true, runValidators: true }
+    )
 
     // Si non trouvé, essaie par projectName et crée si nécessaire
-    if (!artist) {
+    if (!artist && req.body.projectName) {
       artist = await Artist.findOneAndUpdate(
-        { projectName: id },
+        { projectName: req.body.projectName },
         req.body,
         { new: true, runValidators: true, upsert: true }
-      );
+      )
     }
 
     res.json(artist)
   } catch (error) {
-    console.error(error);
+    console.error(error)
     res.status(400).json({ message: error.message })
   }
 }

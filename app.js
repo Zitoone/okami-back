@@ -11,16 +11,14 @@ import emailRoutes from './routes/emailRoutes.js'
 const app = express()
 
 app.use(cors())
-
 app.use(express.json())
 
 
-// Connexion à la base de données
-app.use(async (req, res, next) =>{
-    await connectDB()
-    next()
-})
-
+// Connexion à la base de données, une seule fois au démarrage
+connectDB().catch((err) => {
+        console.error('❌ Erreur de connexion à MongoDB :', err.message)
+        process.exit(1) // Arrête l'application en cas d'erreur
+    })
 
 // Routes
 app.use('/api/artists', artistsRoutes)

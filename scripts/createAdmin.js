@@ -1,20 +1,24 @@
-import '../config/db.js'
+import dotenv from 'dotenv'
+dotenv.config()
+
+import connectDB from '../config/db.js'
 import Admin from '../models/adminModel.js'
 import mongoose from 'mongoose'
 
 async function createAdmin() {
     try{
-        const existing=await Admin.findOne({email: "olivia@okamifestival.com"})
+        await connectDB()
+        const existing=await Admin.findOne({email: "jason@okamifestival.com"})
         if(existing){
             console.log("⚠️ Admin déjà existant")
             return
         }
 
         const admin=new Admin({
-            firstName: "Olivia",
-            lastName: "Nanquette",
-            email: "olivia@okamifestival.com",
-            password: "pass1234",
+            firstName: "Jason",
+            lastName: "Longa",
+            email: "jason@okamifestival.com",
+            password: "legend",
             role: "admin"
         })
 

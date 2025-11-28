@@ -69,46 +69,7 @@ export const sendFormEmail = async (req, res) => {
         if (error && error.response) console.error("Détail SMTP :", error.response);
         res.status(500).json({ success: false, message: "Erreur envoi mail" });
     }
-};
+}
 
 
-/* const nodemailer = require('nodemailer')
-
-exports.sendFormEmail = async (req, res) => {
-    
-    const {name, email, object, message}=req.body
-console.log("Données reçues :", req.body); 
-    if(!name || !email || !message){
-        return res.status(400).json({success:false, message: "Les champs nom, email et message sont requis"})
-    }
-    try{
-        const transporter = nodemailer.createTransport({
-            host: process.env.MAIL_HOST,
-            port: process.env.MAIL_PORT,
-            secure: false,
-            auth:{
-                user:process.env.MAIL_USER,
-                pass:process.env.MAIL_PASS,
-            }
-        })
-        const mailOptions = {
-            from:`"Okami Festival Contact Form" <${process.env.MAIL_USER}>`,
-            to: process.env.MAIL_USER,
-            replyTo: email,
-            subject: `Nouveau message de ${req.body.name}`,
-            text: `
-            Nom: ${name}
-            Email: ${email}
-            Objet: ${object || ""}
-            Message: ${message}
-            `
-        }
-        const info = await transporter.sendMail(mailOptions)
-        console.log("Email envoyé: ", info.response)
-        res.json({success: true, message: "Email envoyé!"})
-
-        }catch(error){
-            console.error('Erreur envoi mail: ', error)
-            res.status(500).json({success:false, message: "Erreur envoi mail"})
-        }
-    } */
+//TODO: Mettre en place Brevo au mieu de Nodemailer + gmail pour + de fiabilité
