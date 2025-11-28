@@ -10,7 +10,13 @@ import emailRoutes from './routes/emailRoutes.js'
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: 'https://okami-sigma.vercel.app',
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+}))
+app.options('*', cors())
+
 app.use(express.json())
 
 
