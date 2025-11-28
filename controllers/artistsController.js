@@ -62,6 +62,11 @@ export const createArtist = async (req, res) => {
 
 // Créer ou mettre à jour un artiste via le formulaire public
 export const createOrUpdateArtist = async (req, res) => {
+  console.log("⚡ Artist form POST triggered ⚡")
+
+  console.log(">>> BODY =", req.body)
+console.log(">>> FILES =", req.files)
+
   try {
     // Vérifie que le nom du projet est fourni
     if (!req.body.projectName) return res.status(400).json({ message: 'Nom du projet requis' })
