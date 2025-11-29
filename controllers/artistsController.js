@@ -61,7 +61,7 @@ export const createArtist = async (req, res) => {
 }
 
 // Créer ou mettre à jour un artiste via le formulaire public
-export const createOrUpdateArtist = async (req, res) => {
+/* export const createOrUpdateArtist = async (req, res) => {
   console.log("⚡ Artist form POST triggered ⚡")
 
   console.log(">>> BODY =", req.body)
@@ -101,9 +101,75 @@ console.log(">>> FILES =", req.files)
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-}
+} */
 
-// Mettre à jour un artiste existant (route admin)
+export const createOrUpdateArtist = async (req, res) => { //test
+  console.log("⚡ Artist form POST triggered ⚡");
+
+  try {
+    console.log(">>> BODY =", req.body);
+    console.log(">>> FILES =", req.files);
+
+    // Vérifie que le nom du projet est fourni
+    if (!req.body.projectName) {
+      return res.status(400).json({ message: 'Nom du projet requis' });
+    }
+
+    // Convertit socialLinks en objet si nécessaire
+    if (req.body.socialLinks) {
+      if (typeof req.body.socialLinks === 'string') {
+        try {
+          req.body.socialLinks = JSON.parse(req.body.socialLinks);
+        } catch (err) {
+          console.warn('Impossible de parser socialLinks, on ignore', err);
+          req.body.socialLinks = {};
+        }
+      }
+    } else {
+      req.body.socialLinks = {};
+    }
+
+    const safeName = req.body.projectName.replace(/[^a-zA-Z0-9_-]/g, '_') || 'unknown';
+
+    // Upload promoPhoto si présent
+    if (req.files?.promoPhoto?.[0]?.buffer) {
+      try {
+        const fileBuffer = req.files.promoPhoto[0].buffer;
+        const result = await uploadImageToCloudinary(fileBuffer, 'okami/artists/promoPhoto', safeName);
+        req.body.promoPhoto = result.secure_url;
+      } catch (err) {
+        console.error('Erreur upload promoPhoto:', err);
+      }
+    }
+
+    // Upload riderTechUpload si présent
+    if (req.files?.riderTechUpload?.[0]?.buffer) {
+      try {
+        const fileBuffer = req.files.riderTechUpload[0].buffer;
+        const result = await uploadFileToCloudinary(fileBuffer, 'okami/artists/riderTech', safeName);
+        req.body.riderTechUpload = result.secure_url;
+      } catch (err) {
+        console.error('Erreur upload riderTechUpload:', err);
+      }
+    }
+
+    // Mise à jour ou création si non trouvé
+    const artist = await Artist.findOneAndUpdate(
+      { projectName: req.body.projectName },
+      req.body,
+      { new: true, runValidators: true, upsert: true }
+    );
+
+    res.status(200).json(artist);
+
+  } catch (error) {
+    console.error("Erreur createOrUpdateArtist:", error);
+    res.status(400).json({ message: error.message });
+  }
+};
+
+
+  // Mettre à jour un artiste existant (route admin)
 export const updateArtist = async (req, res) => {
   try {
     const { id } = req.params
