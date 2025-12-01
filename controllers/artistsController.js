@@ -58,8 +58,13 @@ export const createOrUpdateArtist = async (req, res) => {
     // Vérifie que le nom du projet est fourni
     if (!req.body.projectName) return res.status(400).json({ message: 'Nom du projet requis' })
     
-    // Nettoie le projectName (supprime espaces début/fin)
-    req.body.projectName = req.body.projectName.trim()
+    // Nettoie tous les champs texte (supprime espaces début/fin)
+    const textFields = ['projectName', 'firstName', 'lastName', 'email', 'phone', 'guestName', 'setup', 'setupTime', 'needsSoundcheck', 'comments', 'musicalStyle', 'riderTechUrl']
+    textFields.forEach(field => {
+      if (req.body[field] && typeof req.body[field] === 'string') {
+        req.body[field] = req.body[field].trim()
+      }
+    })
 
     // Convertit socialLinks en objet si nécessaire
     if (req.body.socialLinks && typeof req.body.socialLinks === 'string') {
