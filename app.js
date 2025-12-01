@@ -31,13 +31,10 @@ app.get('/', (req, res) => {
     res.send('Bienvenue sur votre API RESTful OKAMI!')
 })
 
-// Export pour Vercel
-export default app
+// Démarrage du serveur (local et production)
+const port = process.env.PORT || 5001
+app.listen(port, () => {
+  console.log(`Serveur démarré sur le port ${port}`)
+})
 
-// Écoute locale seulement si on lance directement ce fichier
-if (process.env.NODE_ENV !== 'production') {
-        const port = process.env.PORT || 5001
-        app.listen(port, () => {
-        console.log(`Serveur démarré sur http://localhost:${port}`)
-    })
-}
+export default app
