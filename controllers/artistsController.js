@@ -5,7 +5,7 @@ import { uploadImageToCloudinary, uploadFileToCloudinary } from '../middlewares/
 //Récupérer les artistes validés pour la page publique
 export const getPublicArtists = async (req, res) => {
   try {
-    const artists = await Artist.find({ isValidated: true }).sort({ projectName: 1 })
+    const artists = await Artist.find({ isValidated: true }).collation({ locale: 'fr', strength: 2 }).sort({ projectName: 1 })
     if (!artists) {
       return res.status(404).json({ message: 'Aucun artiste validé trouvé' })
     }
@@ -19,7 +19,7 @@ export const getPublicArtists = async (req, res) => {
 // Récupérer tous les artistes (route admin privée)
 export const getAllArtists = async (req, res) => {
   try {
-    const artists = await Artist.find().sort({ projectName: 1 })
+    const artists = await Artist.find().collation({ locale: 'fr', strength: 2 }).sort({ projectName: 1 })
     res.json(artists)
   } catch (error) {
     res.status(500).json({ message: error.message })
