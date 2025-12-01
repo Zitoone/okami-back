@@ -1,6 +1,6 @@
 // Import du modèle Artist pour interagir avec la base de données
 import Artist from '../models/artistsModel.js'
-import { uploadToCloudinary } from '../middlewares/uploadMiddleware.js'
+import { uploadImageToCloudinary, uploadFileToCloudinary } from '../middlewares/uploadMiddleware.js'
 
 //Récupérer les artistes validés pour la page publique
 export const getPublicArtists = async (req, res) => {
@@ -62,9 +62,15 @@ export const createOrUpdateArtist = async (req, res) => {
     }
 
     // Upload de la photo si présente
-    if (req.file) {
-      const result = await uploadToCloudinary(req.file.buffer, 'okami/artists', req.body.projectName)
+    if (req.files?.promoPhoto) {
+      const result = await uploadImageToCloudinary(req.files.promoPhoto[0].buffer, 'PromoPhoto', req.body.projectName)
       req.body.promoPhoto = result.secure_url
+    }
+
+    // Upload du rider technique si présent
+    if (req.files?.riderTechUpload) {
+      const result = await uploadFileToCloudinary(req.files.riderTechUpload[0].buffer, 'RiderTech', req.body.projectName)
+      req.body.riderTechUpload = result.secure_url
     }
 
     // Mise à jour ou création si non trouvé
@@ -95,9 +101,15 @@ export const updateArtist = async (req, res) => {
     }
 
     // Upload de la photo si présente
-    if (req.file) {
-      const result = await uploadToCloudinary(req.file.buffer, 'okami/artists', id)
-      req.body.promoPhoto = result.secure_url // URL Cloudinary
+    if (req.files?.promoPhoto) {
+      const result = await uploadImageToCloudinary(req.files.promoPhoto[0].buffer, 'PromoPhoto', id)
+      req.body.promoPhoto = result.secure_url
+    }
+
+    // Upload du rider technique si présent
+    if (req.files?.riderTechUpload) {
+      const result = await uploadFileToCloudinary(req.files.riderTechUpload[0].buffer, 'RiderTech', id)
+      req.body.riderTechUpload = result.secure_url
     }
 
     // Supprime les champs vides

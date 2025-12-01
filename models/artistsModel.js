@@ -10,24 +10,27 @@ const artistSchema = new mongoose.Schema({
   email: { type: String, trim: true },
   phone: { type: String, trim: true },
   guestName: { type: String, trim: true },
-  runInfo: { type: String },
   
   // Informations techniques (artiste)
   setup: { type: String },
   setupTime: { type: String },
-  needsSoundcheck: { type: Boolean, default: false },
+  needsSoundcheck: { type: String},
   canRecordSet: { type: Boolean, default: false }, 
   comments: { type: String },
+  riderTechUrl: { type: String },
+  riderTechUpload: { type: String },
   
   // Médias et promotion (artiste)
   promoPhoto: { type: String },
   socialLinks: {
     instagram: { type: String, default: '' },
+    facebook: { type: String, default: '' },
     soundcloud: { type: String, default: '' },
     website: { type: String, default: '' },
+    spotify: { type: String, default: '' },
+    youtube: { type: String, default: '' }
   },
   musicalStyle: { type: String },
-  promoText: { type: String },
   
   // Données admin
   numberOfPeople: { type: Number, default:1 },

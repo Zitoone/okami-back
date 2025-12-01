@@ -8,7 +8,7 @@ const router = express.Router()
 
 
 // Création d'artiste via le formulaire public
-router.post('/form', upload.single('promoPhoto'), artistsController.createOrUpdateArtist)
+router.post('/form', upload.fields([{ name: 'promoPhoto', maxCount: 1 }, { name: 'riderTechUpload', maxCount: 1 }]), artistsController.createOrUpdateArtist)
 
 // Route publique AVANT les autres pour la promo des artistes
 router.get('/public', artistsController.getPublicArtists)
@@ -18,7 +18,7 @@ router.post('/new', authMiddleware, artistsController.createArtist)
 
 router.get('/', authMiddleware, artistsController.getAllArtists)
 router.get('/:id', authMiddleware, artistsController.getArtist)
-router.patch('/:id',authMiddleware, upload.single('promoPhoto'), artistsController.updateArtist)
+router.patch('/:id',authMiddleware, upload.fields([{ name: 'promoPhoto', maxCount: 1 }, { name: 'riderTechUpload', maxCount: 1 }]), artistsController.updateArtist)
 router.delete('/:id', authMiddleware, artistsController.deleteArtist)
 
 export default router
