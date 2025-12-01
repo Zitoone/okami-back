@@ -10,9 +10,13 @@ import emailRoutes from './routes/emailRoutes.js'
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: process.env.FRONT_URL || 'https://okami-sigma.vercel.app',
+  credentials: true
+}))
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 
 // Connexion à la base de données
