@@ -20,7 +20,7 @@ const storage = multer.memoryStorage()
 // Middleware Multer pour gérer l'upload des fichiers
 const upload = multer({
   storage,
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB max
+  limits: { fileSize: 4 * 1024 * 1024 }, // 4MB max (Vercel limit)
   fileFilter: (req, file, cb) => {
     if (file.fieldname === 'promoPhoto') {
       const allowedTypes = /jpeg|jpg|png|gif|webp/

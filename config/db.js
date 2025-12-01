@@ -16,7 +16,7 @@ const connectDB = async()=>{
     if(!cached.promise){
         const opts={
             bufferCommands:false,
-            maxPoolSize:10 //limite les connexions simultanées
+            maxPoolSize:50 //permet 50 connexions simultanées pour gérer les pics de trafic
         }
         //On stocke la promesse pour réutilisation
         cached.promise=mongoose.connect(process.env.MONGO_URI, opts)
