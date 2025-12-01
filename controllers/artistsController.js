@@ -57,6 +57,9 @@ export const createOrUpdateArtist = async (req, res) => {
     
     // Vérifie que le nom du projet est fourni
     if (!req.body.projectName) return res.status(400).json({ message: 'Nom du projet requis' })
+    
+    // Nettoie le projectName (supprime espaces début/fin)
+    req.body.projectName = req.body.projectName.trim()
 
     // Convertit socialLinks en objet si nécessaire
     if (req.body.socialLinks && typeof req.body.socialLinks === 'string') {
