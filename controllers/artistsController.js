@@ -53,8 +53,6 @@ export const createArtist = async (req, res) => {
 // Créer ou mettre à jour un artiste via le formulaire public
 export const createOrUpdateArtist = async (req, res) => {
   try {
-    console.log('[createOrUpdateArtist] Début')
-    
     // Vérifie que le nom du projet est fourni
     if (!req.body.projectName) return res.status(400).json({ message: 'Nom du projet requis' })
     
@@ -73,32 +71,26 @@ export const createOrUpdateArtist = async (req, res) => {
 
     // Upload de la photo si présente
     if (req.files?.promoPhoto) {
-      console.log('[createOrUpdateArtist] Upload promoPhoto...')
       const result = await uploadImageToCloudinary(req.files.promoPhoto[0].buffer, 'PromoPhoto', req.body.projectName)
       req.body.promoPhoto = result.secure_url
-      console.log('[createOrUpdateArtist] promoPhoto uploadée:', result.secure_url)
     }
 
     // Upload du rider technique si présent (priorité sur l'URL)
     if (req.files?.riderTechUpload) {
-      console.log('[createOrUpdateArtist] Upload riderTechUpload...')
       const result = await uploadFileToCloudinary(req.files.riderTechUpload[0].buffer, 'RiderTech', req.body.projectName)
       req.body.riderTechUpload = result.secure_url
       delete req.body.riderTechUrl // Supprime l'URL si fichier uploadé
-      console.log('[createOrUpdateArtist] riderTechUpload uploadé:', result.secure_url)
     }
 
-    console.log('[createOrUpdateArtist] Sauvegarde en DB...')
-    // Mise à jour ou création si non trouvé
+    // Mise à jour ou création si non trouvé (insensible à la casse)
     const artist = await Artist.findOneAndUpdate(
       { projectName: req.body.projectName },
       req.body,
-      { new: true, runValidators: true, upsert: true }
+      { new: true, runValidators: true, upsert: true, collation: { locale: 'fr', strength: 2 } }
     )
-    console.log('[createOrUpdateArtist] Succès')
     res.status(200).json(artist)
   } catch (error) {
-    console.error('[createOrUpdateArtist] Erreur:', error)
+    console.error('Erreur createOrUpdateArtist:', error)
     res.status(400).json({ message: error.message })
   }
 }
