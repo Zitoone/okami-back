@@ -18,14 +18,6 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-
-// Connexion à la base de données
-app.use(async (req, res, next) =>{
-    await connectDB()
-    next()
-})
-
-
 // Routes
 app.use('/api/artists', artistsRoutes)
 app.use('/api/admin', adminRoutes)
@@ -37,8 +29,17 @@ app.get('/', (req, res) => {
 
 // Démarrage du serveur (local et production)
 const port = process.env.PORT || 5001
-app.listen(port, () => {
-  console.log(`Serveur démarré sur le port ${port}`)
-})
+
+// Connexion à MongoDB puis démarrage du serveur
+connectDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Serveur démarré sur le port ${port}`)
+    })
+  })
+  .catch((error) => {
+    console.error('Impossible de démarrer le serveur:', error)
+    process.exit(1)
+  })
 
 export default app

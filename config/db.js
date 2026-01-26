@@ -1,40 +1,16 @@
 import mongoose from "mongoose"
 
-//Utilisation d'un cache global pour les fonctions serverless qui évite de récréer un connexion a chaque fois
-let cached=global.mongoose
-
-if(!cached){
-    cached=global.mongoose={conn:null,promise:null}
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {
+            bufferCommands: false,
+            maxPoolSize: 50
+        })
+        console.log("Connexion à MongoDB réussie :-)")
+    } catch (error) {
+        console.error("Erreur de connexion à MongoDB:", error.message)
+        throw error
+    }
 }
 
-const connectDB = async()=>{
-    if(cached.conn){
-        // Si la connexion existe déjà on l' réutilise
-        return cached.conn
-    }
-
-    if(!cached.promise){
-        const opts={
-            bufferCommands:false,
-            maxPoolSize:50 //permet 50 connexions simultanées pour gérer les pics de trafic
-        }
-        //On stocke la promesse pour réutilisation
-        cached.promise=mongoose.connect(process.env.MONGO_URI, opts)
-            .then((mongoose)=> mongoose)
-            .catch((error) => {
-                console.error ("Erreur de connexion à MongoDB: ", error.message)
-                throw error
-            })
-        }
-        try {
-            cached.conn = await cached.promise
-            console.log("Connexion à MongoDB réussie :-)")
-            return cached.conn
-        } catch (error) {
-            console.error("Erreur lors de l'attente à MongoDB: ", error.message)
-            throw error // Laisse le runtime serverless gérer l'erreur proprement
-        }
-    }
-
 export default connectDB
-
