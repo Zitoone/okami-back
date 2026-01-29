@@ -3,12 +3,31 @@ dotenv.config()
 
 import express from 'express'
 import cors from 'cors'
+import helmet from 'helmet'
 import connectDB from './config/db.js'
 import artistsRoutes from './routes/artistsRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import emailRoutes from './routes/emailRoutes.js'
 
 const app = express()
+
+// Sécurité : Headers HTTP avec Helmet
+app.use(
+  helmet({
+    crossOriginOpenerPolicy: { policy: "same-origin" }, // COOP
+    crossOriginResourcePolicy: { policy: "cross-origin" }, // pour Cloudinary
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        frameAncestors: ["'self'"],
+        requireTrustedTypesFor: ["script"],
+        imgSrc: ["'self'", "data:", "https://res.cloudinary.com", "https://www.youtube-nocookie.com"],
+        scriptSrc: ["'self'", "https://www.youtube-nocookie.com"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+      },
+    },
+  })
+)
 
 app.use(cors({
   origin: process.env.FRONT_URL || 'https://okami-sigma.vercel.app',

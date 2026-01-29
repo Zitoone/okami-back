@@ -34,22 +34,7 @@
 - **npm** : v9.x ou supérieur
 - **Git** : v2.x ou supérieur
 
-
-### Dépendances principales
-
-```json
-{
-  "express": "^4.18.2",
-  "mongoose": "^8.18.1",
-  "multer": "^2.0.2",
-  "cloudinary": "^2.8.0",
-  "jsonwebtoken": "^9.0.2",
-  "bcrypt": "^6.0.0",
-  "cors": "^2.8.5",
-  "dotenv": "^17.2.1",
-  "nodemailer": "^7.0.10"
-}
-```
+---
 
 
 ## 🔐 Variables d'environnement
@@ -64,7 +49,7 @@ Créer un fichier `.env` à la racine du projet en y insérant toutes les variab
 |--------------------------|----------------------------------|--------------------------------------------|-------------|
 | `MONGO_URI`              | URI de connexion MongoDB Atlas   | `mongodb+srv://<user>:<password>@cluster.mongodb.net/<dbname>` | Oui |
 | `JWT_SECRET`             | Clé secrète pour JWT            | `votre_secret_complexe`                     | Oui |
-| `CLOUDINARY_CLOUD_NAME`  | Nom du cloud Cloudinary         | `okami-cloud`                               | Oui |
+| `CLOUDINARY_CLOUD_NAME`  | Nom du cloud Cloudinary         | `name-cloud`                               | Oui |
 | `CLOUDINARY_API_KEY`     | Clé API Cloudinary              | `123456789`                                 | Oui |
 | `CLOUDINARY_API_SECRET`  | Secret API Cloudinary           | `abcdefg`                                   | Oui |
 | `MAIL_HOST`              | Serveur SMTP                    | `smtp.gmail.com`                            | Oui |
@@ -108,7 +93,7 @@ app.listen(port, () => {
 #### 1.3 Commit et push
 
 ```bash
-git add -A
+git add .
 git commit -m "chore: prepare for Render deployment"
 git push origin main
 ```
@@ -191,8 +176,6 @@ Vous la trouverez en haut du dashboard, sous le nom du service.
 
 ---
 
----
-
 ## ✅ Étape 5 : Vérification
 
 #### 5.1 Tester l'API
@@ -221,8 +204,6 @@ En cas d'erreur, consultez les logs dans l'onglet **Logs** du dashboard.
 
 ---
 
----
-
 ## 🔗 Étape 6 : Mise à jour du frontend
 
 #### 6.1 Configurer l'URL de l'API
@@ -242,8 +223,6 @@ Dans Render, mettez à jour la variable `FRONT_URL` avec l'URL exacte de votre f
 #### 6.3 Tester l'intégration
 
 Testez le formulaire en production pour vérifier la communication frontend-backend.
-
----
 
 ---
 
@@ -280,7 +259,6 @@ En cas de problème :
 1. Allez dans **Events**
 2. Trouvez le dernier déploiement fonctionnel
 3. Cliquez sur **"Rollback to this deploy"**
-
 
 ---
 
